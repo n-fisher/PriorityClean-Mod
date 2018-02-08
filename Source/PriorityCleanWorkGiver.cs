@@ -30,16 +30,28 @@ namespace PriorityClean
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
             List<Thing> list = pawn.Map.listerFilthInHomeArea.FilthInHomeArea;
-            list.RemoveAll(thing => !thing.Map.terrainGrid.TerrainAt(thing.InteractionCell).defName.Equals("SterileTile"));
+            list.RemoveAll(filth => !IsPriorityFilth((Filth)filth));
             return list;
         }
 
+        private List<RoomRoleDef> allowedRooms = new List<RoomRoleDef>() { RoomRoleDefOf.Hospital, RoomRoleDefOf.Laboratory, RoomRoleDefOf.PrisonBarracks, RoomRoleDefOf.PrisonCell };
+
+        private bool IsPriorityRoom(RoomRoleDef room)
+        {
+            return room.defName.Equals("Kitchen") || allowedRooms.Contains(room);
+        }
+
+        private bool IsPriorityFilth(Filth f)
+        {
+            return IsPriorityRoom(f.GetRoom().Role) && f.Map.terrainGrid.TerrainAt(f.InteractionCell).defName.Equals("SterileTile") && !f.Map.thingGrid.ThingsListAt(f.InteractionCell).Any(t => !(t is Blueprint));
+        }
+        
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             return pawn.Faction == Faction.OfPlayer &&
                 t != null &&
                 t is Filth && 
-                t.Map.terrainGrid.TerrainAt(t.InteractionCell).defName.Equals("SterileTile") && 
+                IsPriorityFilth((Filth) t) && 
                 t.Map.areaManager.Home[t.Position] && 
                 pawn.CanReserve(t, 1, -1, null, forced);
          }
@@ -47,28 +59,37 @@ namespace PriorityClean
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             Job job = new Job(JobDefOf.Clean);
-            job.AddQueuedTarget(TargetIndex.A, t);
-            int num = 25;
+            const int queueMax = 10;
+            const int searchDepthMax = 100;
             Map map = t.Map;
             Room room = t.GetRoom(RegionType.Set_Passable);
-            for (int i = 0; i < 100; i++)
+
+            if (IsPriorityRoom(room.Role))
             {
-                IntVec3 intVec = t.Position + GenRadial.RadialPattern[i];
-                if (intVec.InBounds(map) && intVec.GetRoom(map, RegionType.Set_Passable) == room)
+                job.AddQueuedTarget(TargetIndex.A, t);
+                for (int i = 0; i < searchDepthMax; i++)
                 {
-                    List<Thing> thingList = intVec.GetThingList(map);
-                    for (int j = 0; j < thingList.Count; j++)
+                    IntVec3 intVec = t.Position + GenRadial.RadialPattern[i];
+                    if (intVec.InBounds(map) &&
+                        intVec.GetRoom(map, RegionType.Set_Passable) == room)
                     {
-                        Thing thing = thingList[j];
-                        if (HasJobOnThing(pawn, thing, forced) && thing != t)
+                        List<Thing> thingList = intVec.GetThingList(map);
+                        for (int j = 0; j < thingList.Count; j++)
                         {
-                            job.AddQueuedTarget(TargetIndex.A, thing);
+                            Thing thing = thingList[j];
+                            if (HasJobOnThing(pawn, thing, forced) && thing != t)
+                            {
+                                job.AddQueuedTarget(TargetIndex.A, thing);
+                            }
                         }
+                        if (job.GetTargetQueue(TargetIndex.A).Count >= queueMax)
+                            break;
                     }
-                    if (job.GetTargetQueue(TargetIndex.A).Count >= num)
-                        break;
-                } else {
-                    break;
+                    else
+                    {
+                        // If breaking out of container bump index along instead of continuing expensive checks for what could be a stretch of wall
+                        i = (int)(i * 1.3);
+                    }
                 }
             }
             if (job.targetQueueA != null && job.targetQueueA.Count >= 5)
