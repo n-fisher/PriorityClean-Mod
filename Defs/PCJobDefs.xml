@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <JobDef>
+    <defName>PriorityClean</defName>
+    <driverClass>JobDriver_PriorityCleanFilth</driverClass>
+    <reportString>priority cleaning TargetA.</reportString>
+  </JobDef>
+  
+  <WorkGiverDef>
+    <defName>PriorityCleanFilth</defName>
+    <label>priority clean filth</label>
+    <giverClass>WorkGiver_PriorityCleanFilth</giverClass>
+    <workType>PriorityCleaning</workType>
+    <verb>priority clean</verb>
+    <gerund>priority cleaning</gerund>
+    <priorityInType>1</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+  
+  <WorkTypeDef>
+    <defName>PriorityCleaning</defName>
+    <labelShort>Priority Clean</labelShort>
+    <pawnLabel>Priority Cleaner</pawnLabel>
+    <gerundLabel>priority cleaning</gerundLabel>
+    <description>Clean the floor on sterile tiles.</description>
+    <verb>Priority Clean</verb>
+    <naturalPriority>1175</naturalPriority>
+    <alwaysStartActive>true</alwaysStartActive>
+    <requireCapableColonist>true</requireCapableColonist>
+    <workTags>
+      <li>ManualDumb</li>
+      <li>Cleaning</li>
+    </workTags>
+  </WorkTypeDef>
+</Defs>

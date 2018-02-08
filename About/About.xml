@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+	<name>PriorityClean Mod</name>
+	<author>fyarn</author>
+	<targetVersion>0.18.0</targetVersion>
+	<description>This mod prioritizes cleaning sterile tiles on-demand.
+</description>
+</ModMetaData>
