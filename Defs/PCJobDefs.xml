@@ -1,18 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-  <JobDef>
-    <defName>PriorityClean</defName>
-    <driverClass>JobDriver_CleanFilth</driverClass>
-    <reportString>priority cleaning TargetA.</reportString>
-  </JobDef>
-  
   <WorkGiverDef>
     <defName>PriorityCleanFilth</defName>
-    <label>priority clean filth</label>
-    <giverClass>WorkGiver_PriorityCleanFilth</giverClass>
+    <label>clean filth</label>
+    <giverClass>PriorityClean.WorkGiver_PriorityClean</giverClass>
     <workType>PriorityCleaning</workType>
-    <verb>priority clean</verb>
-    <gerund>priority cleaning</gerund>
+    <verb>clean</verb>
+    <gerund>cleaning</gerund>
     <priorityInType>1</priorityInType>
     <requiredCapacities>
       <li>Manipulation</li>
@@ -21,10 +15,10 @@
   
   <WorkTypeDef>
     <defName>PriorityCleaning</defName>
-    <labelShort>Priority Clean</labelShort>
+    <labelShort>Clean+</labelShort>
     <pawnLabel>Priority Cleaner</pawnLabel>
     <gerundLabel>priority cleaning</gerundLabel>
-    <description>Clean the floor on sterile tiles.</description>
+    <description>Clean filth on sterile tiles.</description>
     <verb>Priority Clean</verb>
     <naturalPriority>1175</naturalPriority>
     <alwaysStartActive>true</alwaysStartActive>

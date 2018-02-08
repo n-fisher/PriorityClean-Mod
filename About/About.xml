@@ -3,6 +3,6 @@
 	<name>PriorityClean Mod</name>
 	<author>fyarn</author>
 	<targetVersion>0.18.0</targetVersion>
-	<description>This mod prioritizes cleaning sterile tiles on-demand.
+	<description>This mod prioritizes cleaning sterile tiles with a special work category.
 </description>
 </ModMetaData>

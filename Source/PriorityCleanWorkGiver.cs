@@ -7,13 +7,11 @@ namespace PriorityClean
 {
     public static class PriorityCleanDefOf
     {
-        public static TerrainDef SterileTile;
+        public static TerrainDef SterileTile = TerrainDef.Named("SterileTile");
     }
 
     public class WorkGiver_PriorityClean : WorkGiver_Scanner
     {
-        private int MinTicksSinceThickened = 600;
-
         public override PathEndMode PathEndMode
         {
             get => PathEndMode.Touch;
@@ -32,26 +30,18 @@ namespace PriorityClean
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
             List<Thing> list = pawn.Map.listerFilthInHomeArea.FilthInHomeArea;
-            list.RemoveAll(thing => thing.Map.terrainGrid.TerrainAt(thing.InteractionCell).Equals(PriorityCleanDefOf.SterileTile));
+            list.RemoveAll(thing => !thing.Map.terrainGrid.TerrainAt(thing.InteractionCell).defName.Equals("SterileTile"));
             return list;
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (pawn.Faction != Faction.OfPlayer)
-            {
-                return false;
-            }
-            Filth filth = t as Filth;
-            if (filth == null || 
-             filth.Map.terrainGrid.TerrainAt(filth.InteractionCell).Equals(PriorityCleanDefOf.SterileTile) || 
-             !filth.Map.areaManager.Home[filth.Position])
-            {
-                return false;
-            }
-            LocalTargetInfo target = t;
-            return pawn.CanReserve(target, 1, -1, null, forced) 
-                && filth.TicksSinceThickened >= MinTicksSinceThickened;
+            return pawn.Faction == Faction.OfPlayer &&
+                t != null &&
+                t is Filth && 
+                t.Map.terrainGrid.TerrainAt(t.InteractionCell).defName.Equals("SterileTile") && 
+                t.Map.areaManager.Home[t.Position] && 
+                pawn.CanReserve(t, 1, -1, null, forced);
          }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -77,6 +67,8 @@ namespace PriorityClean
                     }
                     if (job.GetTargetQueue(TargetIndex.A).Count >= num)
                         break;
+                } else {
+                    break;
                 }
             }
             if (job.targetQueueA != null && job.targetQueueA.Count >= 5)
