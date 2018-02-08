@@ -2,7 +2,7 @@
 <Defs>
   <JobDef>
     <defName>PriorityClean</defName>
-    <driverClass>JobDriver_PriorityCleanFilth</driverClass>
+    <driverClass>JobDriver_CleanFilth</driverClass>
     <reportString>priority cleaning TargetA.</reportString>
   </JobDef>
   
