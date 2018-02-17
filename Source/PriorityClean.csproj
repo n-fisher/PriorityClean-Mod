@@ -54,6 +54,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PriorityClean.cs" />
+    <Compile Include="PriorityCleanSettings.cs" />
     <Compile Include="PriorityCleanWorkGiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
