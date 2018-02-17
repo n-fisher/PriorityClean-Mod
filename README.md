@@ -1,9 +1,12 @@
 # PriorityClean-Mod
 
 ## Description:
-This mod for Rimworld adds cleaning sterile tiles as a specific work type. Can specify clearing sterile tiles before cleaning other tiles.
+This mod for Rimworld adds cleaning sterile tiles or specific rooms as a specific work type. Can specify keeping rooms that matter clean before cleaning all other tiles.
 
 ## Updates
+Feb 17 2018
+Add mod settings to specify which rooms to priority clean
+
 Feb 7 2018
 Initial Release
 
