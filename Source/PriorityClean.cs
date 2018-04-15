@@ -26,7 +26,7 @@ namespace PriorityClean
             listing_Standard.CheckboxLabeled("Clean Laboratories: ", ref settings.cleanLaboratory);
             listing_Standard.CheckboxLabeled("Clean Prison Barracks: ", ref settings.cleanPrisonBarracks);
             listing_Standard.CheckboxLabeled("Clean Cells: ", ref settings.cleanCell);
-            listing_Standard.CheckboxLabeled("Clean all other sterile tiles: ", ref settings.cleanAllOtherSterileTiles);
+            listing_Standard.CheckboxLabeled("Clean all sterile tiles: ", ref settings.cleanAllOtherSterileTiles);
             listing_Standard.TextFieldNumericLabeled<int>("Max number of tiles to queue in a job (1-50): ", ref settings.jobQueueMax, ref jobQueueMaxString, 1, 50);
             listing_Standard.TextFieldNumericLabeled<int>("Radius of tiles to scan for filth (1-10): ", ref settings.jobScanRadius, ref jobScanRadiusString, 1, 10);
             listing_Standard.End();
