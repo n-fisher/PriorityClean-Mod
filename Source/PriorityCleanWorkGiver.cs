@@ -32,6 +32,10 @@ namespace PriorityClean
 
         private static bool IsInPriorityRoom(Filth f)
         {
+            if (PriorityClean.settings.cleanAllOtherSterileTiles && IsOnSterileTile(f)) {
+                return true;
+            }
+
             switch (f.GetRoom().Role.defName)
             {
                 case "Kitchen":
@@ -45,8 +49,7 @@ namespace PriorityClean
                 case "Hospital":
                     return PriorityClean.settings.cleanHospital;
                 default:
-                    return PriorityClean.settings.cleanAllOtherSterileTiles &&
-                        IsOnSterileTile(f);
+                    return false;
             }
         }
 
