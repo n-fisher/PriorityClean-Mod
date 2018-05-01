@@ -36,7 +36,7 @@ namespace PriorityClean
                 return true;
             }
 
-            switch (f.GetRoom().Role.defName)
+            switch (f.GetRoom()?.Role?.defName)
             {
                 case "Kitchen":
                     return PriorityClean.settings.cleanKitchen;
