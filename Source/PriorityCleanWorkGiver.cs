@@ -25,9 +25,7 @@ namespace PriorityClean
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            List<Thing> list = pawn.Map.listerFilthInHomeArea.FilthInHomeArea;
-            list.RemoveAll(filth => !IsPriorityFilth((Filth)filth));
-            return list;
+            return pawn.Map.listerFilthInHomeArea.FilthInHomeArea.FindAll(filth => IsPriorityFilth((Filth)filth));
         }
 
         private static bool IsInPriorityRoom(Filth f)
