@@ -4,6 +4,15 @@
 This mod for Rimworld adds cleaning sterile tiles or specific rooms as a specific work type. Can specify keeping rooms that matter clean before cleaning all other tiles.
 
 ## Updates
+Sep 8 2018
+B19 Update
+
+May 1 2018
+Update to fix this mod not letting colonists clean anything other than priority tiles. Sorry! Thanks @Uuugggg
+
+Apr 15 2018
+Fix bug where a disabled priority room would disable any sterile tiles from being included in 'clean all tiles'. Updated setting text for accuracy.
+
 Feb 17 2018
 Add mod settings to specify which rooms to priority clean
 
