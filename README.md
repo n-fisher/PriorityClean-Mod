@@ -7,6 +7,9 @@ This mod for Rimworld adds cleaning sterile tiles or specific rooms as a specifi
 Oct 17 2018
 1.0 Update
 
+Sep 15 2018
+Mod Settings window bugfix
+
 Sep 8 2018
 B19 Update
 
