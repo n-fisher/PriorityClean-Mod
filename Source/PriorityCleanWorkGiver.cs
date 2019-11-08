@@ -28,38 +28,43 @@ namespace PriorityClean
             return pawn.Map.listerFilthInHomeArea.FilthInHomeArea.FindAll(filth => IsPriorityFilth((Filth)filth));
         }
 
-        private static bool IsInPriorityRoom(Filth f)
-        {
-            if (PriorityClean.settings.cleanAllOtherSterileTiles && IsOnSterileTile(f)) {
-                return true;
-            }
-
-            switch (f.GetRoom()?.Role?.defName)
-            {
-                case "Kitchen":
-                    return PriorityClean.settings.cleanKitchen;
-                case "Laboratory":
-                    return PriorityClean.settings.cleanLaboratory;
-                case "PrisonBarracks":
-                    return PriorityClean.settings.cleanPrisonBarracks;
-                case "PrisonCell":
-                    return PriorityClean.settings.cleanCell;
-                case "Hospital":
-                    return PriorityClean.settings.cleanHospital;
-                default:
-                    return false;
-            }
-        }
-
-        private static bool IsOnSterileTile(Filth f)
-        {
-            return f.Map.terrainGrid.TerrainAt(f.InteractionCell).defName.Equals("SterileTile");
-        }
-
         private static bool IsPriorityFilth(Filth f)
         {
-            return IsInPriorityRoom(f) &&
-                !IsOnBuggyTile(f);
+            bool isPriority = false;
+
+            // check for priority tile types
+            switch (f.Map.terrainGrid.TerrainAt(f.InteractionCell).defName) {
+                case "SterileTile":
+                    isPriority = PriorityClean.settings.cleanSterileTiles; break;
+                case "SilverTile":
+                    isPriority = PriorityClean.settings.cleanSilverTiles; break;
+                case "MetalTile":
+                    isPriority = PriorityClean.settings.cleanMetalTiles; break;
+                default:
+                    isPriority = PriorityClean.settings.cleanAllCleanlinessTiles &&
+                        f.Map.terrainGrid.TerrainAt(f.InteractionCell).statBases.Exists(def =>
+                            def.stat.label.Equals("cleanliness") && def.value > 0);
+                    break;
+            }
+
+            // otherwise check for priority rooms
+            if (!isPriority) {
+                switch (f.GetRoom()?.Role?.defName) {
+                    case "Kitchen":
+                        isPriority = PriorityClean.settings.cleanKitchen; break;
+                    case "Laboratory":
+                        isPriority =  PriorityClean.settings.cleanLaboratory; break;
+                    case "PrisonBarracks":
+                        isPriority =  PriorityClean.settings.cleanPrisonBarracks; break;
+                    case "PrisonCell":
+                        isPriority =  PriorityClean.settings.cleanCell; break;
+                    case "Hospital":
+                        isPriority =  PriorityClean.settings.cleanHospital; break;
+                }
+            }
+
+            // Finish with buggy tile check if it's a priority tile
+            return isPriority && !IsOnBuggyTile(f);
         }
 
         private static bool IsOnBuggyTile(Filth f)
