@@ -4,6 +4,9 @@
 This mod for Rimworld adds cleaning sterile tiles as a specific work type. Can specify cleaning sterile tiles or various tiles that boost cleanliness before other tiles. Keep the important areas clean!
 
 Updates:
+Feb 18 2019
+Update for [1.1 unstable] compatibility
+
 Nov 7 2019
 Add more mod settings for a broader range of clean tile specifications
 
