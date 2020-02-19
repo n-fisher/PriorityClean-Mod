@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>PriorityClean Mod</name>
+	<name>PriorityClean</name>
 	<author>fyarn</author>
+	<packageId>fyarn.PriorityClean</packageId>
     <supportedVersions>
+      <li>1.0</li>
       <li>1.1</li>
     </supportedVersions>
-	<description>This mod prioritizes cleaning important tiles with a special work category.
-</description>
+	<description>This mod prioritizes cleaning important tiles with a special work category.</description>
 </ModMetaData>
