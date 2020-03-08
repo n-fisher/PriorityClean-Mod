@@ -1,0 +1,31 @@
+﻿<Defs>
+  <WorkGiverDef>
+    <defName>PriorityCleanFilth</defName>
+    <label>clean filth</label>
+    <giverClass>PriorityClean.WorkGiver_PriorityClean</giverClass>
+    <workType>PriorityCleaning</workType>
+    <verb>clean</verb>
+    <gerund>cleaning</gerund>
+    <priorityInType>1</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+  
+  <WorkTypeDef>
+    <defName>PriorityCleaning</defName>
+    <labelShort>Clean+</labelShort>
+    <pawnLabel>Priority Cleaner</pawnLabel>
+    <gerundLabel>priority cleaning</gerundLabel>
+    <description>Clean filth on sterile tiles.</description>
+    <verb>Priority Clean</verb>
+    <naturalPriority>1175</naturalPriority>
+    <alwaysStartActive>true</alwaysStartActive>
+    <requireCapableColonist>true</requireCapableColonist>
+    <workTags>
+      <li>ManualDumb</li>
+      <li>Cleaning</li>
+      <li>Commoner</li>
+    </workTags>
+  </WorkTypeDef>
+</Defs>

@@ -5,35 +5,29 @@ using Verse.AI;
 
 namespace PriorityClean
 {
-    public class WorkGiver_PriorityClean : WorkGiver_Scanner
-    {
-
-        public override PathEndMode PathEndMode
-        {
+    public class WorkGiver_PriorityClean : WorkGiver_Scanner {
+        public override PathEndMode PathEndMode {
             get => PathEndMode.Touch;
         }
 
-        public override ThingRequest PotentialWorkThingRequest
-        {
+        public override ThingRequest PotentialWorkThingRequest {
             get => ThingRequest.ForGroup(ThingRequestGroup.Filth);
         }
 
-        public override int LocalRegionsToScanFirst
-        {
+        public override int MaxRegionsToScanBeforeGlobalSearch {
             get => 4;
         }
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
-        {
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) {
             return pawn.Map.listerFilthInHomeArea.FilthInHomeArea.FindAll(filth => IsPriorityFilth((Filth)filth));
         }
 
-        private static bool IsPriorityFilth(Filth f)
-        {
+        private static bool IsPriorityFilth(Filth f) {
             bool isPriority = false;
+            TerrainDef terrain = f?.Map?.terrainGrid?.TerrainAt(f.InteractionCell);
 
             // check for priority tile types
-            switch (f.Map.terrainGrid.TerrainAt(f.InteractionCell).defName) {
+            switch (terrain?.defName) {
                 case "SterileTile":
                     isPriority = PriorityClean.settings.cleanSterileTiles; break;
                 case "SilverTile":
@@ -42,8 +36,10 @@ namespace PriorityClean
                     isPriority = PriorityClean.settings.cleanMetalTiles; break;
                 default:
                     isPriority = PriorityClean.settings.cleanAllCleanlinessTiles &&
-                        f.Map.terrainGrid.TerrainAt(f.InteractionCell).statBases.Exists(def =>
-                            def.stat.label.Equals("cleanliness") && def.value > 0);
+                        terrain.statBases.Exists(def =>
+                            def?.stat?.label != null &&
+                            def.stat.label.Equals("cleanliness") &&
+                            def.value > 0);
                     break;
             }
 
@@ -67,17 +63,15 @@ namespace PriorityClean
             return isPriority && !IsOnBuggyTile(f);
         }
 
-        private static bool IsOnBuggyTile(Filth f)
-        {
+        private static bool IsOnBuggyTile(Filth f) {
             return f.Map.thingGrid.ThingsListAt(f.InteractionCell).Any(t => t is Blueprint || t is Frame);
         }
         
-        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
-        {
-            return pawn.Faction == Faction.OfPlayer &&
-                t is Filth filth && 
+        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false) {
+            return pawn.IsColonistPlayerControlled &&
+                t is Filth filth &&
                 IsPriorityFilth(filth) &&
-                filth.Map.areaManager.Home[filth.Position] && 
+                filth.Map.areaManager.Home[filth.Position] &&
                 pawn.CanReserve(filth, 1, -1, null, forced);
          }
 
@@ -87,8 +81,7 @@ namespace PriorityClean
             Map map = t.Map;
             Room room = t.GetRoom(RegionType.Set_Passable);
 
-            if (t is Filth f && IsPriorityFilth(f))
-            {
+            if (t is Filth f && IsPriorityFilth(f)) {
                 job.AddQueuedTarget(TargetIndex.A, t);
                 foreach (IntVec3 intVec in GenRadial.RadialPatternInRadius(PriorityClean.settings.jobScanRadius)) {
                     IntVec3 pos = intVec + t.Position;

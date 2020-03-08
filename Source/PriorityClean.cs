@@ -3,19 +3,16 @@ using Verse;
 
 namespace PriorityClean
 {
-    class PriorityClean : Mod
-    {
+    class PriorityClean : Mod {
         public static PriorityCleanSettings settings;
 
-        public PriorityClean(ModContentPack content) : base(content)
-        {
+        public PriorityClean(ModContentPack content) : base(content) {
             settings = GetSettings<PriorityCleanSettings>();
         }
 
         public override string SettingsCategory() => "PriorityClean";
 
-        public override void DoSettingsWindowContents(Rect inRect)
-        {
+        public override void DoSettingsWindowContents(Rect inRect) {
             string jobQueueMaxString = settings.jobQueueMax.ToString(),
                 jobScanRadiusString = settings.jobScanRadius.ToString();
 
