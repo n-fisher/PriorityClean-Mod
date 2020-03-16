@@ -25,6 +25,7 @@ namespace PriorityClean
         private static bool IsPriorityFilth(Filth f) {
             bool isPriority = false;
             TerrainDef terrain = f?.Map?.terrainGrid?.TerrainAt(f.InteractionCell);
+            if (terrain == null) return false;
 
             // check for priority tile types
             switch (terrain?.defName) {
@@ -36,9 +37,9 @@ namespace PriorityClean
                     isPriority = PriorityClean.settings.cleanMetalTiles; break;
                 default:
                     isPriority = PriorityClean.settings.cleanAllCleanlinessTiles &&
+                        terrain.statBases != null &&
                         terrain.statBases.Exists(def =>
-                            def?.stat?.label != null &&
-                            def.stat.label.Equals("cleanliness") &&
+                            def?.stat?.label == "cleanliness" &&
                             def.value > 0);
                     break;
             }
