@@ -86,7 +86,7 @@ namespace PriorityClean
                 job.AddQueuedTarget(TargetIndex.A, t);
                 foreach (IntVec3 intVec in GenRadial.RadialPatternInRadius(PriorityClean.settings.jobScanRadius)) {
                     IntVec3 pos = intVec + t.Position;
-                    if (pos.InBounds(map) && pos.GetRoom(map, RegionType.Set_Passable) == room) {
+                    if (pos.InBounds(map) && pos.GetRoom(map) == room) {
                         pos.GetThingList(map).ForEach(thing => {
                             if (thing != t && HasJobOnThing(pawn, thing, forced)) {
                                 job.AddQueuedTarget(TargetIndex.A, thing);
